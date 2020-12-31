@@ -21,10 +21,11 @@ enum
 	kSSD1331PinSCK		= GPIO_MAKE_PIN(HW_GPIOA, 9),
 	kSSD1331PinCSn		= GPIO_MAKE_PIN(HW_GPIOB, 13),
 	kSSD1331PinDC		= GPIO_MAKE_PIN(HW_GPIOA, 12),
-	kSSD1331PinRST		= GPIO_MAKE_PIN(HW_GPIOB, 0),
+	kSSD1331PinRST		= GPIO_MAKE_PIN(HW_GPIOB, 10), // can be set to 0
 };
 
-static int
+//static int
+int
 writeCommand(uint8_t commandByte)
 {
 	spi_status_t status;
@@ -126,7 +127,7 @@ devSSD1331init(void)
 	writeCommand(kSSD1331CommandVCOMH);		// 0xBE
 	writeCommand(0x3E);
 	writeCommand(kSSD1331CommandMASTERCURRENT);	// 0x87
-	writeCommand(0x06);
+	writeCommand(0x06);//original value of 0x06, highest value is 0x0F
 	writeCommand(kSSD1331CommandCONTRASTA);		// 0x81
 	writeCommand(0x91);
 	writeCommand(kSSD1331CommandCONTRASTB);		// 0x82
@@ -155,9 +156,20 @@ devSSD1331init(void)
 	/*
 	 *	Any post-initialization drawing commands go here.
 	 */
-	//...
-
-
+//	writeCommand(kSSD1331CommandCONTRASTB);
+//	writeCommand(0xFF);	//sets contrast of green to 255d (maximum)
+	
+	writeCommand(kSSD1331CommandDRAWRECT);
+	writeCommand(0x00);	//column address of start
+	writeCommand(0x00);	//row address of start
+	writeCommand(0x5F);	//collumn address of end
+	writeCommand(0x3F);	//row address of end	
+	writeCommand(0x00);	//line colour intensity (red)
+	writeCommand(0xFF);	//line colour intensity (green)
+	writeCommand(0x00);	//line colour intensity (blue)	
+	writeCommand(0x00);	//fill colour intensity (red)
+	writeCommand(0xFF);	//fill colour intensity (green)
+	writeCommand(0x00);	//fill colour intensity (blue)
 
 	return 0;
 }

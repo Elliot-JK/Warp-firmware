@@ -1,0 +1,14 @@
+void		cw5Code();
+static void	setup();
+static uint32_t SW2();
+static uint32_t SW3();
+static double	maxAxSel(int16_t Xs[30], int16_t Ys[30], int16_t Zs[30]);
+static uint8_t	crossing(int16_t data[30], int threshold);
+static void	speed(int steps, uint8_t reads, uint8_t height, uint8_t numCol[3], uint8_t bgCol[3]);
+static uint8_t	getAccelData(bool print);
+static void 	numbers(uint8_t row, uint8_t column, uint8_t number, uint8_t col[3]);
+static void	colour(uint8_t red, uint8_t green, uint8_t blue);
+static void	loadingBar(uint8_t length, uint8_t barCol[3], uint8_t BGCol[3]);
+static uint8_t	setHeight(uint8_t numCol[3], uint8_t barCol[3], uint8_t bgCol[3]);
+static void	centerSquare(uint8_t sqrCol[3]);
+static void	display_numbers(int number, char location, uint8_t digiCol[3], uint8_t BGC[3]);
