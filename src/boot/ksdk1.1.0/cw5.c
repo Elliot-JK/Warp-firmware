@@ -508,7 +508,7 @@ setup()
 }
 
 static double
-maxAxSel(int16_t Xs[30], int16_t Ys[30], int16_t Zs[30])
+maxAxSel(int16_t Xs[40], int16_t Ys[40], int16_t Zs[40])
 {
 	/* maxAxSel() determines which of the three axis has the most activity (by obtaining the range of accleration values)
 	 * the value we return from this is then the threshold value we will use later to determine whether or not a step has been performed
@@ -531,7 +531,7 @@ maxAxSel(int16_t Xs[30], int16_t Ys[30], int16_t Zs[30])
 	zL = Zs[0];
 	zSmall = zL;
 
-	for(int n = 0; n < 30; n++)
+	for(int n = 0; n < 40; n++)
 	{
 		if(Xs[n] > xL) {xL = Xs[n];}
 		if(Xs[n] < xSmall) {xSmall = Xs[n];}
@@ -552,14 +552,14 @@ maxAxSel(int16_t Xs[30], int16_t Ys[30], int16_t Zs[30])
 }
 
 static uint8_t
-crossing(int16_t data[30], int threshold)
+crossing(int16_t data[40], int threshold)
 {
 	/* crossing() is the function where we actually determine whether or not we have crossed over the threshold value, and therefore have made a step
 	 * it should be noted that this currently only counts a step on the falling edge. This is an arbitrary choice, and we could look for rising edge crosses instead.
 	 */
 	uint8_t 	crosses = 0;
 	
-	for(int i = 1; i<30; i++)
+	for(int i = 1; i<40; i++)
 	{
 		if((data[i] < data[i-1]) && (data[i] < threshold) && (data[i-1] > threshold)) { crosses += 1; }
 	}
@@ -571,13 +571,13 @@ static uint8_t
 getAccelData(bool print)
 {
 	/* getAccelData() is arguably the most important function, as this is where the accleration values are actually obtained and all data handling happens here
-	 * 30 values are obtained at 50 millisecond intervals, to get 2 seconds worth of data. The last data points (i.e. the 25th value) do not have any delay after them so that the next set of data can be obained at the beginning of the next 2 second period
+	 * 40 values are obtained at 50 millisecond intervals, to get 2 seconds worth of data. The last data points (i.e. the 25th value) do not have any delay after them so that the next set of data can be obained at the beginning of the next 2 second period
 	 */
 	uint16_t        LSB;
 	uint16_t        MSB;
 	int16_t         combinedValue;
 	WarpStatus      i2cReadStatus;
-	int		DLength = 30; // max value seems to be 50 or just above
+	int		DLength = 40; // max value seems to be 50 or just above
 	int16_t		xData[DLength];
 	int16_t         yData[DLength];
 	int16_t         zData[DLength];
@@ -801,7 +801,7 @@ cw5Code()
 		SEGGER_RTT_printf(0, "\nnew read inbound: %d\n", startTime);
 		if(reads < displayInt)
 		{
-			newSteps = getAccelData(false);
+			newSteps = getAccelData(false);	//set to true to print out acceleration data (this will make the time between 2 second sampling periods larger than 50 ms, so other metrics will suffer
 //			if(newSteps > 0){steps += newSteps; reads += 1;}
 			steps += newSteps; reads += 1;
 		}
