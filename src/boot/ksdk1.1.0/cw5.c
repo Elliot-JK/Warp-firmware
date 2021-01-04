@@ -543,7 +543,7 @@ maxAxSel(int16_t Xs[40], int16_t Ys[40], int16_t Zs[40])
 	xRange = xL - xSmall;
 	yRange = yL - ySmall;
 	zRange = zL - zSmall;
-	if((xRange < 1000 ) && (yRange < 1000) && (zRange < 1000)){return 1.0;}
+	if((xRange < 2000 ) && (yRange < 2000) && (zRange < 2000)){return 1.0;}
 	if( (xRange >= yRange) && (xRange >= zRange) ) {return (((xL + xSmall)/2) + 0.1);}
 	if( (yRange >= xRange) && (yRange >= zRange) ) {return (((yL + ySmall)/2) + 0.2);}
 	if( (zRange >= yRange) && (zRange >= xRange) ) {return (((zL + zSmall)/2) + 0.3);}
@@ -713,39 +713,41 @@ speed(int steps, uint8_t reads, uint8_t height, uint8_t numCol[3], uint8_t bgCol
 	 * the assumption is essentially: more steps in 2 second period -> faster speed. Therefore, this is only a reference value and should not be taken as the absolute correct value of your speed
 	 */
 	uint8_t		step2sec = 0;
-	uint8_t		stride = 0;
+	uint16_t		stride = 0;
+	uint16_t	newHeight = 0;
 	step2sec = steps/reads;
+	newHeight = height * step2sec;
 	switch(step2sec)
 	{
 		default:
-			stride = 1.2 * height;
+			stride = 1.2 * newHeight;
 			break;
 		case 0:
 			stride = 0;
 			break;
 		case 1:
-			stride = height / 5;
+			stride = newHeight / 5;
 			break;
 		case 2:
-			stride = height / 4;
+			stride = newHeight / 4;
 			break;
 		case 3:
-			stride = height / 5;
+			stride = newHeight / 3;
 			break;
 		case 4:
-			stride = height / 4;
+			stride = newHeight / 2;
 			break;
 		case 5:
-			stride = height / 5;
+			stride = newHeight / 1.2;
 			break;
 		case 6:
-			stride = height / 4;
+			stride = newHeight;
 			break;
 		case 7:
-			stride = height;;
+			stride = newHeight;
 			break;
 	}
-	stride = stride * 3.6;
+	stride = stride * 3.6 / 2;
 	display_numbers(stride, 'v', numCol, bgCol);
 }
 
@@ -801,7 +803,7 @@ cw5Code()
 		SEGGER_RTT_printf(0, "\nnew read inbound: %d\n", startTime);
 		if(reads < displayInt)
 		{
-			newSteps = getAccelData(false);	//set to true to print out acceleration data (this will make the time between 2 second sampling periods larger than 50 ms, so other metrics will suffer
+			newSteps = getAccelData(true);	//set to true to print out acceleration data (this will make the time between 2 second sampling periods larger than 50 ms, so other metrics will suffer
 //			if(newSteps > 0){steps += newSteps; reads += 1;}
 			steps += newSteps; reads += 1;
 		}
