@@ -60,11 +60,17 @@ To make the Pedometer and Pace Tracker, an FRDM KL03 board, a display using the 
 wiring diagram:
 
 FRDM J2 pin 1 -> R
+
 FRDM J3 pin 5 -> +
+
 FRDM J3 pin 7 -> G
+
 FRDM J4 pin 1 -> CK
+
 FRDM J4 pin 2 -> SI
+
 FRDM J4 pin 3 -> DC
+
 FRDM J4 pin 5 -> OC
 
 # Software explanations
