@@ -803,7 +803,7 @@ cw5Code()
 		SEGGER_RTT_printf(0, "\nnew read inbound: %d\n", startTime);
 		if(reads < displayInt)
 		{
-			newSteps = getAccelData(true);	//set to true to print out acceleration data (this will make the time between 2 second sampling periods larger than 50 ms, so other metrics will suffer
+			newSteps = getAccelData(false);	//set to true to print out acceleration data (this will make the time between 2 second sampling periods larger than 50 ms, so other metrics will suffer
 //			if(newSteps > 0){steps += newSteps; reads += 1;}
 			steps += newSteps; reads += 1;
 		}
